@@ -5,5 +5,5 @@ run ProfileTest::Application
 
 if Rails.env.profile?
 #  use Rack::RubyProf, :path => '/temp/profile'
-  use Rack::RubyProf, :path => '/tmp'
+  use Rack::RubyProf, :path => 'tmp/profile'
 end
