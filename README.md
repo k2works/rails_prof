@@ -1,13 +1,13 @@
 # 目的
-
+アプリケーションのパフォーマンスボトルネックを洗い出し改善する。
 
 # 前提
 | ソフトウェア     | バージョン    | 備考        |
 |:---------------|:-------------|:------------|
 | Ruby           |1.9.3p392     |       |
 | Rails          |3.2.13        |       |
-| sqlite3        |3.7.16.2        |       |
-| ruby-prof         |2             |       |
+| sqlite3        |3.7.16.2      |       |
+| ruby-prof      |0.13.0        |       |
 
 # 構成
 * [railsアプリの構築](#section1)
@@ -99,11 +99,11 @@ profile_test/config/environments/profile.rb
           config.assets.debug = true
         end
 
-### gemfileに追加する
+### gemfileを編集する
 
     group :profile do
       gem 'ruby-prof'
-      end
+    end
 
 ### config.ruを編集する
 
@@ -124,14 +124,10 @@ profile_test/config/database.yml
 
     bash-3.2$ rake db:migrate RAILS_ENV=profile
 
-### railsをprofile環境で起動する
-
-    bash-3.2$ rails s -e profile
-
 ### プロファイリングコードを追記する
 profile_test/app/controllers/
 
-    def index
+      def index
 
         # define mesurment type
         # as described: https://github.com/ruby-prof/ruby-prof#measurements
@@ -150,6 +146,14 @@ profile_test/app/controllers/
         end
       end
 
+### その他
+アセットパイプラインのためにプリコンパイル済みのアセットを作成しておく
+
+    $ bundle exec rake assets:precompile RAILS_ENV=profile
+
+### railsをprofile環境で起動する
+
+    bash-3.2$ rails s -e profile
 
 # 参照
 [ruby-prof/ruby-prof](https://github.com/ruby-prof/ruby-prof)
@@ -157,3 +161,5 @@ profile_test/app/controllers/
 [ruby-profとKCacheGrindでプロファイル野郎になる](http://blog.mirakui.com/entry/20100919/rubyprof)
 
 [Profiling Rails Applications](http://dpaluy.github.io/blog/2013/04/09/profiling-rails-applications/#ruby-prof)
+
+[プリコンパイル済みのアセットを作成する](http://d.hatena.ne.jp/tetsuyai/20110920/1316504421)
