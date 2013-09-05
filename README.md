@@ -113,6 +113,7 @@ profile_test/config/environments/profile.rb
     end
 
 /temp/profileと指定するとファイルの絶対パスを指定することになりファイルが見つからないエラーが出る。
+
 相対パスでRailsのプロジェクト内に配置したい場合は上記のファイルパス指定とする。
 
 ### database.ymを編集する
@@ -163,7 +164,9 @@ profile_test/app/controllers/
 
 ### KCachegrindをインストールする。
 Macの場合MacPortを使ってインストールする。
+
 brewを使う場合はqcachegrindをインストールする。
+
 qtも必要なのでなければ一緒にインストールする。
 
     bash-3.2$ brew install qcachegrind at
