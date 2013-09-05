@@ -4,6 +4,5 @@ require ::File.expand_path('../config/environment',  __FILE__)
 run ProfileTest::Application
 
 if Rails.env.profile?
-#  use Rack::RubyProf, :path => '/temp/profile'
-  use Rack::RubyProf, :path => '/tmp'
+  use Rack::RubyProf, :path => 'temp/profile', :printers => {RubyProf::CallTreePrinter => 'Callgrid.out'}
 end

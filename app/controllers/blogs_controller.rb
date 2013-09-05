@@ -3,16 +3,7 @@ class BlogsController < ApplicationController
   # GET /blogs.json
   def index
 
-    # define mesurment type
-    # as described: https://github.com/ruby-prof/ruby-prof#measurements
-    RubyProf.measure_mode = RubyProf::PROCESS_TIME
-
-    RubyProf.start
-
-    # code to profile
-    @blogs = Blog.all    
-
-    result = RubyProf.stop
+    @blogs = Blog.all
     
     respond_to do |format|
       format.html # index.html.erb

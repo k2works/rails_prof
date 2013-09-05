@@ -12,6 +12,7 @@
 # 構成
 * [railsアプリの構築](#section1)
 * [railsアプリのプロファイリング](#section2)
+* [プロファイリング結果を分析する](#section3)
 
 # 詳細
 ## <a name="section1">railsアプリの構築
@@ -108,8 +109,11 @@ profile_test/config/environments/profile.rb
 ### config.ruを編集する
 
     if Rails.env.profile?
-      use Rack::RubyProf, :path => '/temp/profile'
+      use Rack::RubyProf, :path => 'temp/profile'
     end
+
+/temp/profileと指定するとファイルの絶対パスを指定することになりファイルが見つからないエラーが出る。
+相対パスでRailsのプロジェクト内に配置したい場合は上記のファイルパス指定とする。
 
 ### database.ymを編集する
 profile_test/config/database.yml
@@ -155,6 +159,35 @@ profile_test/app/controllers/
 
     bash-3.2$ rails s -e profile
 
+## <a name="section3">プロファイリング結果を分析する
+
+### KCachegrindをインストールする。
+Macの場合MacPortを使ってインストールする。
+brewを使う場合はqcachegrindをインストールする。
+qtも必要なのでなければ一緒にインストールする。
+
+    bash-3.2$ brew install qcachegrind at
+
+    bash-3.2$ qcachegrind
+
+### Graphvizのインストール確認
+
+    bash-3.2$ which dot
+    /usr/local/bin/dot
+
+なければインストール
+
+    bash-3.2$ brew install graphviz
+
+### KCachegrindに読み込ませるCallTreeファイルを出力するようにする
+profile_test/config.ru
+
+    if Rails.env.profile?
+        use Rack::RubyProf, :path => 'temp/profile', :printers => {RubyProf::CallTreePrinter => 'Callgrid.out'}
+    end
+
+### 出力されたblogs-Callgrid.outファイルをKCachegrindに読み込ませる
+
 # 参照
 [ruby-prof/ruby-prof](https://github.com/ruby-prof/ruby-prof)
 
@@ -163,3 +196,7 @@ profile_test/app/controllers/
 [Profiling Rails Applications](http://dpaluy.github.io/blog/2013/04/09/profiling-rails-applications/#ruby-prof)
 
 [プリコンパイル済みのアセットを作成する](http://d.hatena.ne.jp/tetsuyai/20110920/1316504421)
+
+[Homebrewを利用してKCachegrind(QCachegrind)をインストールし、PHPで使えるようにする](http://d.hatena.ne.jp/shigemk2/20120323/1332433728)
+
+[KCachegrindを使ったコード改善](http://99blues.dyndns.org/blog/2010/07/kcachegrind/)
