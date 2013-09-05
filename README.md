@@ -129,28 +129,6 @@ profile_test/config/database.yml
 
     bash-3.2$ rake db:migrate RAILS_ENV=profile
 
-### プロファイリングコードを追記する
-profile_test/app/controllers/
-
-      def index
-
-        # define mesurment type
-        # as described: https://github.com/ruby-prof/ruby-prof#measurements
-        RubyProf.measure_mode = RubyProf::PROCESS_TIME
-
-        RubyProf.start
-
-        # code to profile
-        @blogs = Blog.all    
-
-        result = RubyProf.stop
-    
-        respond_to do |format|
-          format.html # index.html.erb
-          format.json { render json: @blogs }
-        end
-      end
-
 ### その他
 アセットパイプラインのためにプリコンパイル済みのアセットを作成しておく
 
